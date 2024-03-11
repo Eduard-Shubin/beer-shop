@@ -16,9 +16,9 @@ import {
     VStack,
     ButtonGroup,
     Badge,
+    Spacer,
 } from '@chakra-ui/react'
 import { v4 as uuidv4 } from 'uuid'
-
 import {
     MdShoppingCart,
     MdDeleteForever,
@@ -28,14 +28,14 @@ import {
 import { useCart } from '../../context/CartContext'
 import { Link } from 'react-router-dom'
 
+import QuantityInput from '../QuantityInput/QuantityInput'
+
 const CartPopover = () => {
     const { cart, removeFromCart, clearCart, increaseQty, decreaseQty } =
         useCart()
 
-    console.log('cart', cart)
-
     return (
-        <Popover overflowY="auto" maxW="70vh">
+        <Popover>
             <PopoverTrigger>
                 <Box>
                     <Icon
@@ -59,96 +59,145 @@ const CartPopover = () => {
                     </Badge>
                 </Box>
             </PopoverTrigger>
-            <PopoverContent>
+
+            <PopoverContent maxHeight="70vh" boxShadow="md">
                 <PopoverArrow />
                 <PopoverCloseButton />
-
-                <PopoverBody>
+                <PopoverBody
+                    maxHeight="70vh"
+                    overflowY="auto"
+                    css={{
+                        '&::-webkit-scrollbar': {
+                            width: '4px',
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            width: '6px',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            background: 'grey',
+                            borderRadius: '24px',
+                        },
+                    }}
+                >
                     {cart.length > 0 ? (
-                        cart.map((product, index) => {
-                            return (
-                                <Box mb={3} key={uuidv4()}>
-                                    <HStack spacing={2}>
-                                        <Box w="100px">
-                                            <Link
-                                                to={`http://localhost:5173/product/${product.id}`}
-                                                mb={3}
-                                            >
-                                                <HStack justifyContent="center">
-                                                    <Image
-                                                        boxSize="100px"
-                                                        objectFit="contain"
-                                                        src={product.image_url}
-                                                        alt={product.name}
-                                                        alignSelf="center"
-                                                    />
-                                                </HStack>
-                                            </Link>
-                                        </Box>
-                                        <Box w="300px">
-                                            <VStack>
+                        <Box>
+                            {cart.map((product, index) => {
+                                return (
+                                    <Box mb={3} key={uuidv4()}>
+                                        <HStack spacing={2}>
+                                            <Box w="100px">
                                                 <Link
                                                     to={`http://localhost:5173/product/${product.id}`}
                                                     mb={3}
                                                 >
-                                                    <Text>{`${product.name} x${product.qty}`}</Text>
+                                                    <HStack justifyContent="center">
+                                                        <Image
+                                                            boxSize="100px"
+                                                            objectFit="contain"
+                                                            src={
+                                                                product.image_url
+                                                            }
+                                                            alt={product.name}
+                                                            alignSelf="center"
+                                                        />
+                                                    </HStack>
                                                 </Link>
-                                                <ButtonGroup>
-                                                    <Button
-                                                        isDisabled={
-                                                            product.qty <= 1
-                                                        }
-                                                        onClick={() =>
-                                                            decreaseQty(
-                                                                product.id
-                                                            )
-                                                        }
+                                            </Box>
+                                            <Box w="300px">
+                                                <VStack alignItems="flex-start">
+                                                    <Link
+                                                        to={`http://localhost:5173/product/${product.id}`}
+                                                        mb={3}
                                                     >
-                                                        <Icon as={MdRemove} />
-                                                    </Button>
-                                                    <Button
-                                                        onClick={() =>
-                                                            increaseQty(
-                                                                product.id
-                                                            )
-                                                        }
+                                                        <Text>{`${product.name}`}</Text>
+                                                    </Link>
+                                                    <ButtonGroup
+                                                        size="xs"
+                                                        justifyContent="center"
+                                                        gap={2}
                                                     >
-                                                        <Icon as={MdAdd} />
-                                                    </Button>
-                                                </ButtonGroup>
-                                            </VStack>
-                                        </Box>
-                                        <Box w="50px">
-                                            <Text as="b">{`${product.price}$`}</Text>
-                                        </Box>
-                                        <Box
-                                            _hover={{ cursor: 'pointer' }}
-                                            onClick={() => {
-                                                removeFromCart(product.id)
-                                            }}
-                                            w="50px"
-                                        >
-                                            <Icon
-                                                as={MdDeleteForever}
-                                                boxSize={6}
-                                            />
-                                        </Box>
-                                    </HStack>
-                                    {index + 1 < cart.length ? (
-                                        <Divider mt={3} mb={3} />
-                                    ) : null}
-                                </Box>
-                            )
-                        })
+                                                        <Button
+                                                            isDisabled={
+                                                                product.qty <= 1
+                                                            }
+                                                            onClick={() =>
+                                                                decreaseQty(
+                                                                    product.id
+                                                                )
+                                                            }
+                                                        >
+                                                            <Icon
+                                                                as={MdRemove}
+                                                            />
+                                                        </Button>
+                                                        <QuantityInput
+                                                            id={product.id}
+                                                            qty={product.qty}
+                                                        />
+                                                        <Button
+                                                            onClick={() =>
+                                                                increaseQty(
+                                                                    product.id
+                                                                )
+                                                            }
+                                                        >
+                                                            <Icon as={MdAdd} />
+                                                        </Button>
+                                                    </ButtonGroup>
+                                                </VStack>
+                                            </Box>
+                                            <Box w="50px">
+                                                <Text as="b">{`${
+                                                    product.price * product.qty
+                                                }$`}</Text>
+                                            </Box>
+                                            <Box
+                                                _hover={{ cursor: 'pointer' }}
+                                                onClick={() => {
+                                                    removeFromCart(product.id)
+                                                }}
+                                                w="50px"
+                                            >
+                                                <Icon
+                                                    as={MdDeleteForever}
+                                                    boxSize={6}
+                                                />
+                                            </Box>
+                                        </HStack>
+                                        {index + 1 < cart.length ? (
+                                            <Box>
+                                                <Divider mt={3} mb={3} />
+                                            </Box>
+                                        ) : null}
+                                    </Box>
+                                )
+                            })}
+                            <Button
+                                onClick={clearCart}
+                                w="100%"
+                                variant="outline"
+                                colorScheme="cyan"
+                                borderRadius={3}
+                            >
+                                Clear Cart
+                            </Button>
+                        </Box>
                     ) : (
                         <Text>Cart is empty</Text>
                     )}
                 </PopoverBody>
                 {cart.length > 0 && (
-                    <PopoverFooter>
-                        <HStack justifyContent="space-around" spacing={2}>
-                            <Button onClick={clearCart}>Clear Cart</Button>
-                            <Text textAlign="right" fontSize="xl">{`Total: ${
+                    <PopoverFooter
+                        position="sticky"
+                        bottom="0"
+                        left="0"
+                        right="0"
+                        backgroundColor="white"
+                    >
+                        <HStack>
+                            <Text fontSize="xl">Total</Text>
+                            <Spacer />
+                            <Text fontSize="xl">{`${
                                 cart
                                     ? cart.reduce(
                                           (acc, curr) =>
@@ -158,6 +207,9 @@ const CartPopover = () => {
                                     : 0
                             }$`}</Text>
                         </HStack>
+                        <Button as={Link} to="/cart">
+                            My Cart
+                        </Button>
                     </PopoverFooter>
                 )}
             </PopoverContent>

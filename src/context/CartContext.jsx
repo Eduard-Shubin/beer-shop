@@ -25,7 +25,7 @@ export const CartProvider = ({ children }) => {
         }
     }
 
-    function increaseQty(id) {
+    const increaseQty = (id) => {
         setCart((prevState) => {
             const updatedCart = prevState.map((item) => {
                 if (item.id === id) {
@@ -40,13 +40,28 @@ export const CartProvider = ({ children }) => {
         })
     }
 
-    function decreaseQty(id) {
+    const decreaseQty = (id) => {
         setCart((prevState) => {
             const updatedCart = prevState.map((item) => {
                 if (item.id === id) {
                     return {
                         ...item,
                         qty: item.qty - 1,
+                    }
+                }
+                return item
+            })
+            return updatedCart
+        })
+    }
+
+    const changeQty = (id, itemQty) => {
+        setCart((prevState) => {
+            const updatedCart = prevState.map((item) => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        qty: itemQty,
                     }
                 }
                 return item
@@ -72,6 +87,7 @@ export const CartProvider = ({ children }) => {
                 clearCart,
                 increaseQty,
                 decreaseQty,
+                changeQty,
             }}
         >
             {children}

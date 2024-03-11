@@ -9,6 +9,7 @@ const Navigation = () => {
     return (
         <Box
             bgGradient="linear(to-r, cyan.100, green.100)"
+            boxShadow="md"
             display="flex"
             m={0}
             p={4}

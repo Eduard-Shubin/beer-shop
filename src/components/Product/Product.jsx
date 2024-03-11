@@ -38,7 +38,7 @@ const Product = memo(function Product({ product }) {
 
     return (
         <>
-            <Card key={uuidv4()} maxW="sm">
+            <Card key={uuidv4()} maxW="sm" boxShadow="lg">
                 <CardBody
                     onClick={() => handleProductClick(product)}
                     _hover={{ cursor: 'pointer' }}
