@@ -1,24 +1,38 @@
-# Online Store Prototype
+Certainly, let's create a brief documentation for this repository in English.
 
-This project is a prototype for an online store. It's designed to demonstrate the basic functionalities of an e-commerce website, including product listing, product details, cart, and checkout features.
+### Overview
 
-## Getting Started
+This repository contains a prototype for an online store. It demonstrates the basic functionalities of an e-commerce website, including product listing, product details, cart, and checkout features.
 
-These instructions will get you a copy of the project up and running on your local machine for development purposes.
+### Getting Started
 
-### Prerequisites
+To get the project up and running locally, make sure you have the latest versions of Node.js and npm installed.
 
-Before you begin, ensure you have met the following requirements:
-
--   You have installed the latest version of Node.js and npm.
-
-### Installing and Running
-
-Follow these steps to get a development environment running:
+#### Installation and Running
 
 1. Clone the repository to your local machine.
 2. Navigate to the project directory.
-3. Install the project dependencies with `npm install`.
-4. Start the development server with `npm run dev`.
+3. Install the project dependencies using `npm install`.
+4. Start the development server using `npm run dev`.
 
-The application will start running on your local development server. You can access it by navigating to `http://localhost:5173` in your web browser (or whatever port you have configured).
+The application will be running on your local development server. You can access it by navigating to `http://localhost:5173` in your web browser (or whichever port you have configured).
+
+### Components and Features
+
+The project includes the following key components:
+
+- [`Product`](src/components/Product/Product.jsx): A component for displaying product information.
+- [`CheckoutPage`](src/components/CheckoutPage/CheckoutPage.jsx): The checkout page with a form and payment functionality.
+- [`ProductDetails`](src/components/ProductDetails/ProductDetails.jsx): A detailed product page with in-depth information.
+- [`ProductDetailsModal`](src/components/ProductDetailsModal/ProductDetailsModal.jsx): A modal window showing product details.
+- [`CompletedOrder`](src/components/CompletedOrder/CompletedOrder.jsx): A page showing the successful completion of an order.
+
+### Routing
+
+The project uses `react-router-dom` for navigation. Here are the main routes:
+
+- Home page with a list of products: `/`
+- Product details page: `/product/:id`
+- Cart: `/cart`
+- Checkout: `/checkout`
+- Successful order completion page: `/completed`
