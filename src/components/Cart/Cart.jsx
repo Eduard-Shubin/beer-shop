@@ -168,7 +168,7 @@ const Cart = () => {
                     <Button
                         as={Link}
                         to="/checkout"
-                        colorScheme="blue"
+                        colorScheme="teal"
                         size="lg"
                     >
                         Proceed to Checkout

@@ -14,6 +14,7 @@ import ProductDetails from './components/ProductDetails/ProductDetails'
 import { CartProvider } from './context/CartContext'
 import Cart from './components/Cart/Cart'
 import CheckoutPage from './components/CheckoutPage/CheckoutPage'
+import CompletedOrder from './components/CompletedOrder/CompletedOrder'
 
 import './index.css'
 
@@ -21,9 +22,11 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
             <Route index element={<Products />} />
+            <Route path="/products/:pageNumber" element={<Products />} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/completed" element={<CompletedOrder />} />
         </Route>
     )
 )

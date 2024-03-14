@@ -35,7 +35,7 @@ const CartPopover = () => {
         useCart()
 
     return (
-        <Popover>
+        <Popover returnFocusOnClose={false}>
             <PopoverTrigger>
                 <Box>
                     <Icon
@@ -197,7 +197,7 @@ const CartPopover = () => {
                         <HStack>
                             <Text fontSize="xl">Total</Text>
                             <Spacer />
-                            <Text fontSize="xl">{`${
+                            <Text as="b" fontSize="xl">{`${
                                 cart
                                     ? cart.reduce(
                                           (acc, curr) =>
@@ -207,7 +207,12 @@ const CartPopover = () => {
                                     : 0
                             }$`}</Text>
                         </HStack>
-                        <Button as={Link} to="/cart">
+                        <Button
+                            as={Link}
+                            to="/cart"
+                            colorScheme="teal"
+                            w="100%"
+                        >
                             My Cart
                         </Button>
                     </PopoverFooter>

@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import { useEffect, useState } from 'react'
 import {
     Image,
@@ -19,14 +18,14 @@ import {
 } from '@chakra-ui/react'
 import { lighten } from 'polished'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { ArrowBackIcon } from '@chakra-ui/icons'
 
 import BadgeWithTooltip from '../BadgeWithTooltip/BadgeWithTooltip'
 import ProductDetailsModal from '../ProductDetailsModal/ProductDetailsModal'
 import { useCart } from '../../context/CartContext'
+import fakeApi from '../../../fakeapi/fakeapi'
 
-const ProductDetails = memo(function ProductDetails() {
+const ProductDetails = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -35,29 +34,27 @@ const ProductDetails = memo(function ProductDetails() {
     const [loading, setLoading] = useState(true)
     const [product, setProduct] = useState(null)
 
+    const handleBuyNow = (product) => {
+        addToCart(product)
+        navigate('/checkout')
+    }
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(
-                    `https://api.punkapi.com/v2/beers/${id}`
-                )
+        fakeApi
+            .getBeer()
+            .then((data) => {
                 setProduct({
-                    ...response.data[0],
-                    price: calculateRandomPrice(response.data[0].volume.value),
+                    ...data,
+                    price: calculateRandomPrice(data.volume.value),
                 })
-            } catch (error) {
+            })
+            .catch((error) => {
                 console.error(error)
-            } finally {
+            })
+            .finally(() => {
                 setLoading(false)
-            }
-        }
-
-        fetchData()
+            })
     }, [id])
-
-    // const handleBuyNow = (product) => {
-    //     addToCart(product)
-    // }
 
     return (
         <Flex justifyContent={'center'}>
@@ -176,6 +173,9 @@ const ProductDetails = memo(function ProductDetails() {
                                                     bg="blue.100"
                                                     color="blue.500"
                                                     _hover={{ bg: 'blue.200' }}
+                                                    onClick={() => {
+                                                        handleBuyNow(product)
+                                                    }}
                                                 >
                                                     Buy Now
                                                 </Button>
@@ -190,7 +190,7 @@ const ProductDetails = memo(function ProductDetails() {
             </Box>
         </Flex>
     )
-})
+}
 
 // Функция для расчета случайной цены
 function calculateRandomPrice(liters) {

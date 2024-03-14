@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { memo, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
     Text,
     Image,
@@ -19,13 +19,18 @@ import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 import { motion } from 'framer-motion'
 
-const Product = memo(function Product({ product }) {
+const Product = ({ product }) => {
     const navigate = useNavigate()
     const { addToCart } = useCart()
     const [price, setPrice] = useState(null)
 
     const handleProductClick = (product) => {
         navigate(`/product/${product.id}`)
+    }
+
+    const handleBuyNow = (product) => {
+        addToCart(product)
+        navigate('/checkout')
     }
 
     useEffect(() => {
@@ -89,7 +94,17 @@ const Product = memo(function Product({ product }) {
                 <Divider />
                 <CardFooter>
                     <ButtonGroup spacing="2">
-                        <Button variant="solid" colorScheme="blue">
+                        <Button
+                            as={motion.div}
+                            variant="solid"
+                            colorScheme="blue"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            _hover={{ cursor: 'pointer' }}
+                            onClick={() => {
+                                handleBuyNow(product)
+                            }}
+                        >
                             Buy now
                         </Button>
 
@@ -97,7 +112,13 @@ const Product = memo(function Product({ product }) {
                             as={motion.div}
                             variant="ghost"
                             colorScheme="blue"
-                            whileTap={{ scale: 1.1 }}
+                            animate={{ backgroundColor: '#EBF8FF' }}
+                            whileHover={{
+                                backgroundColor: '#BEE3F8',
+                                scale: 1.05,
+                            }}
+                            transition={{ duration: 0.3 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => {
                                 addToCart(product)
                             }}
@@ -110,7 +131,7 @@ const Product = memo(function Product({ product }) {
             </Card>
         </>
     )
-})
+}
 
 function calculateRandomPrice(liters) {
     const randomMultiplier = Math.round(Math.random() * 4 + 1) + Math.random()
