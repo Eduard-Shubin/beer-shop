@@ -1,4 +1,3 @@
-Certainly, let's create a brief documentation for this repository in English.
 
 ### Overview
 
